@@ -1,3 +1,4 @@
+within mbsSetupOptimizer;
 function NormalLoads
   import Modelica.Constants.g_n;
   import Modelica.Units.SI.*;
@@ -7,7 +8,7 @@ function NormalLoads
   input Velocity u;
   input String wheelPos; // 'FL', 'FR', 'RL', 'RR'
   
-  output Real Fz; // TODO: I guess this should be Force not Real?
+  output Force Fz; // TODO: I guess this should be Force not Real?
   
   protected
     Real FLf;

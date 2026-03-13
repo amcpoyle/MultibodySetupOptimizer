@@ -1,4 +1,4 @@
-within;
+within mbsSetupOptimizer;
 package TireParameters
   constant Real ref_load = 1500;
   constant Real pCx1 = 1.532;

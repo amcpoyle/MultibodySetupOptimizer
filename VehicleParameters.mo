@@ -1,4 +1,4 @@
-within;
+within mbsSetupOptimizer;
 package VehicleParameters
   import Modelica.Units.SI.*;
   constant Height h = 0.24; // cg height
@@ -22,5 +22,8 @@ package VehicleParameters
   constant Real LLTD = 0.5; // lateral load transfer dist
   constant Real aeroDistro = 0.46;
   constant Real weightDistro = 0.475;
+  constant Real steer_ratio = 1/5; // TODO: guess, 5:1 steer ratio
+  
+  constant Real Izz = 130; // TODO: total guess
   
 end VehicleParameters;

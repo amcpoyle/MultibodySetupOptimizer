@@ -1,9 +1,11 @@
+within mbsSetupOptimizer;
 function MagicFormulaFxFy
+  import Modelica.Units.SI.*;
   input Real kappa;
-  input Real alpha;
-  input Real Fz;
-  output Real Fx;
-  output Real Fy;
+  input Angle alpha;
+  input Force Fz;
+  output Force Fx;
+  output Force Fy;
   
   protected
     Real dfz;

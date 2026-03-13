@@ -13,6 +13,8 @@ package VehicleParameters
   constant Real CLf = 1.65; // Cl for front
   constant Real CLr = 1.65;
   constant Area A = 1.1; // frontal area
+  constant Real CLfA = CLf*A;
+  constant Real CLrA = CLr*A;
   constant Real gamma = 0.5; // brake ratio
   constant Real roll_stiffness = 0.53;
   constant Power P_max = 80*1000; // max power in (W)  

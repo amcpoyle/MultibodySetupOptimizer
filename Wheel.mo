@@ -2,8 +2,8 @@ within mbsSetupOptimizer;
 model Wheel
   import Modelica.Units.SI.*;
   
-  type WheelPosition = enumeration(FL, FR, RL, RR);
-  parameter WheelPosition pos;
+  // type WheelPosition = enumeration(FL, FR, RL, RR);
+  parameter Integer pos; // 1 = FL, 2 = FR, 3 = RL, 4 = RR
   
   Velocity vx_wheel(start=0); // lon velocity
   Velocity vy_wheel(start=0); // lat velocity
@@ -31,24 +31,24 @@ model Wheel
   mbsSetupOptimizer.connectors.AccelerationInput accel_input;
   
 equation
-  if pos == WheelPosition.FL then
+  if pos == 1 then
     vy_wheel = vy_body + yaw_rate*VehicleParameters.a;
     vx_wheel = vx_body - yaw_rate*(VehicleParameters.trackwidth/2);
-    Fz = NormalLoads(ax, ay, vx_wheel, "FL");
-  elseif pos == WheelPosition.FR then
+    Fz = NormalLoads(ax, ay, vx_wheel, pos);
+  elseif pos == 2 then
     vy_wheel = vy_body + yaw_rate*VehicleParameters.a;
     vx_wheel = vx_body + yaw_rate*(VehicleParameters.trackwidth/2);
-    Fz = NormalLoads(ax, ay, vx_wheel, "FR");
-  elseif pos == WheelPosition.RL then
+    Fz = NormalLoads(ax, ay, vx_wheel, pos);
+  elseif pos == 3 then
     vy_wheel = vy_body + yaw_rate*VehicleParameters.b;
     vx_wheel = vx_body - yaw_rate*(VehicleParameters.trackwidth/2);
-    Fz = NormalLoads(ax, ay, vx_wheel, "RL");
-  elseif pos == WheelPosition.RR then
+    Fz = NormalLoads(ax, ay, vx_wheel, pos);
+  elseif pos == 4 then
     vy_wheel = vy_body + yaw_rate*VehicleParameters.b;
     vx_wheel = vx_body + yaw_rate*(VehicleParameters.trackwidth/2);
-    Fz = NormalLoads(ax, ay, vx_wheel, "RR");
+    Fz = NormalLoads(ax, ay, vx_wheel, pos);
   end if;
-  
+    
   alpha = -atan(vy_wheel/vx_wheel) - delta;
   kappa = 0; // very simplified for steady-state
   

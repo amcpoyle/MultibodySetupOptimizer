@@ -37,7 +37,7 @@ algorithm
   Cx := TireParameters.pCx1;
   Bx := Kx/(Cx*Dx + 1e-6);
   
-  Ky := TireParameters.ref_load*TireParameters.pKy1*sin(2*atan(Fz/TireParameters.pKy2*TireParameters.ref_load));
+  Ky := TireParameters.ref_load*TireParameters.pKy1*sin(2*atan(Fz/(TireParameters.pKy2*TireParameters.ref_load)));
   Ey := TireParameters.pEy1;
   Dy := (TireParameters.pDy1 + TireParameters.pDy2*dfz)*TireParameters.lambda_muy;
   Cy := TireParameters.pCy1;

@@ -6,7 +6,7 @@ function NormalLoads
   input Acceleration ax;
   input Acceleration ay;
   input Velocity u;
-  input String wheelPos; // 'FL', 'FR', 'RL', 'RR'
+  input Integer wheelPos; // 'FL'=1, 'FR'=2, 'RL'=3, 'RR'=4
   
   output Force Fz; // TODO: I guess this should be Force not Real?
   
@@ -22,16 +22,16 @@ algorithm
   FLr := 0.5*VehicleParameters.CLrA*VehicleParameters.rho_air*(u^2);
   
   // TODO: this entire section can be easily simplified
-  if wheelPos == "FL" then
+  if wheelPos == 1 then
     Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) - 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) + VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
     
-  elseif wheelPos == "FR" then
+  elseif wheelPos == 2 then
     Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) - 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) - VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
     
-  elseif wheelPos == "RL" then
+  elseif wheelPos == 3 then
     Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) + 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) + VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
     
-  elseif wheelPos == "RR" then
+  elseif wheelPos == 4 then
     Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) + 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) - VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
     
   else

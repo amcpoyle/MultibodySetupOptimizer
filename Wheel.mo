@@ -41,7 +41,7 @@ equation
     vx_wheel = vx_body - yaw_rate*(VehicleParameters.trackwidth/2);
     
     sigma_x = (vx_wheel - omega*VehicleParameters.rolling_radius)/(omega*VehicleParameters.rolling_radius); // lon slip
-    sigma_y = ((vy_wheel + yaw_rate*VehicleParameters.a)*cos(delta) - (vx_wheel - yaw_rate*VehicleParameters.trackwidth/2)*sin(delta))/((vx_wheel - yaw_rate*VehicleParameters.trackwidth/2)*cos(delta) + (vy_wheel + yaw_rate*VehicleParameters.a)*sin(delta));
+    sigma_y = (vy_wheel*cos(delta) - vx_wheel*sin(delta))/(vx_wheel*cos(delta) + vy_wheel*sin(delta));
     
     Fz = NormalLoads(ax, ay, vx_wheel, pos);
     
@@ -51,7 +51,7 @@ equation
     vx_wheel = vx_body + yaw_rate*(VehicleParameters.trackwidth/2);
     
     sigma_x = (vx_wheel - omega*VehicleParameters.rolling_radius)/(omega*VehicleParameters.rolling_radius); // lon slip
-    sigma_y = ((vy_wheel + yaw_rate*VehicleParameters.a)*cos(delta) - (vx_wheel + yaw_rate*VehicleParameters.trackwidth/2)*sin(delta))/((vx_wheel + yaw_rate*VehicleParameters.trackwidth/2)*cos(delta) + (vy_wheel + yaw_rate*VehicleParameters.a)*sin(delta));
+    sigma_y = (vy_wheel*cos(delta) - vx_wheel*sin(delta))/(vx_wheel*cos(delta) + vy_wheel*sin(delta));
     
     Fz = NormalLoads(ax, ay, vx_wheel, pos);
     

@@ -40,7 +40,7 @@ equation
   // equilibrium equations
   // VehicleParameters.vehicleMass*ax = X; // commented out for now since we are fixing ax
   VehicleParameters.vehicleMass*ay = Y;
-  VehicleParameters.Izz*yaw_rate = N;
+  VehicleParameters.Izz*der(yaw_rate) = N;
   yaw_rate = der(r);
   
   Xa = 0.5*VehicleParameters.rho_air*(u^2)*VehicleParameters.Cd*VehicleParameters.A;

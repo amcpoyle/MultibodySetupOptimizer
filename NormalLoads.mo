@@ -29,10 +29,10 @@ algorithm
     Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) - 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) - VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
     
   elseif wheelPos == 3 then
-    Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) + 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) + VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
-    
+    Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.a/(VehicleParameters.a + VehicleParameters.b)) + 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) + VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLr;
+
   elseif wheelPos == 4 then
-    Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.b/(VehicleParameters.a + VehicleParameters.b)) + 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) - VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLf;
+    Fz := 0.5*VehicleParameters.vehicleMass*g_n*(VehicleParameters.a/(VehicleParameters.a + VehicleParameters.b)) + 0.5*VehicleParameters.vehicleMass*ax*(VehicleParameters.h/(VehicleParameters.a + VehicleParameters.b)) - VehicleParameters.vehicleMass*ay*(VehicleParameters.h/VehicleParameters.trackwidth)*VehicleParameters.roll_stiffness + 0.5*FLr;
     
   else
     Fz := 0; // should never get here

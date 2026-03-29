@@ -52,7 +52,7 @@ equation
   Nx = delta_X1*VehicleParameters.trackwidth + delta_X2*VehicleParameters.trackwidth;
   
   X1 = -wheel_fl.Fy*sin(wheel_fl.delta) - wheel_fr.Fy*sin(wheel_fr.delta);
-  X2 = wheel_rl.Fx + wheel_fr.Fx;
+  X2 = wheel_rl.Fx + wheel_rr.Fx;
   Y1 = wheel_fl.Fy*cos(wheel_fl.delta) + wheel_fr.Fy*cos(wheel_fr.delta);
   Y2 = wheel_rl.Fy + wheel_rr.Fy;
   

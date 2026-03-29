@@ -18,4 +18,7 @@ package TireParameters
   constant Real lambda_muy = 1;
   
   constant Real mu = 1; // road friction coef
+  
+  constant Real r_tire = 0.2; // tire radius, guess
+  constant Real I_wheel = 1.0; // wheel moment of inertia
 end TireParameters;

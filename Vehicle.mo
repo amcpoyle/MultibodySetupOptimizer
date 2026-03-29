@@ -2,76 +2,98 @@ within mbsSetupOptimizer;
 model Vehicle
   import Modelica.Units.SI.*;
   
-  parameter Radius R = 7.625; // m, corner radius
-  Velocity V = 15;
-  Angle delta_wheel; // steering wheel angle
-  Angle delta(start=0); // steer angle of the front tires
-  
-  AngularVelocity r_dot(start=0); // yaw rate
-  Acceleration ax = 0;
+  parameter Acceleration ax = 0; // might stay constant but could change...
   Acceleration ay(start=0);
-  Angle beta(start=0); // vehicle side slip angle
+  parameter Velocity u = 15; // lon velocity, this is going to stay constant
+  Velocity v(start=0);
+  AngularVelocity yaw_rate(start=0);
+  Angle delta_steering_wheel(start=0); // this changes with time
   
-  Velocity vx(start=0);
-  Velocity vy(start=0);
   
-  // create an instance of each Wheel
-  Wheel wheel_fl(pos = 1);
-  Wheel wheel_fr(pos = 2);
-  Wheel wheel_rl(pos = 3);
-  Wheel wheel_rr(pos = 4);
+  Force X(start=0); // sum of longitudinal forces
+  Force Y(start=0); // sum of lat forces
+  Torque N(start=0); // yaw moment
+  Angle r(start=0); // yaw angle
   
-  // wheel forces - can just ref from Wheel.mo directly
-  // Force fx_fl, fy_fl, fz_fl;
-  // Force fx_fr, fy_fr, fz_fr;
-  // Force fx_rl, fy_rl, fz_rl;
-  // Force fx_rr, fy_rr, fz_rr;
+  Force X1(start=0); // front lon forces
+  Force X2(start=0);
+  Force Xa(start=0); // aero forces
   
-  // input connectors
-
+  Force Y1(start=0); // front lateral forces
+  Force Y2(start=0); // rear lateral forces
   
-  // output connectors
-  // mbsSetupOptimizer.connectors.AngleOutput beta_output;
-  // mbsSetupOptimizer.connectors.AngleOutput delta_output;
+  Force delta_X1(start=0);
+  Force delta_X2(start=0);
+  
+  Torque Nx(start=0);
+  Torque Ny(start=0);
+  
+  // 11 = fl, 12 = fr, 21 = rl, 22 = rr
+  Wheel wheel_fl(pos=1); // fy, fx, delta
+  Wheel wheel_fr(pos=2);
+  Wheel wheel_rl(pos=3);
+  Wheel wheel_rr(pos=4);
+  
   
 equation
-  delta_wheel = 0.5*(time/5.0); // ramp from 0 to 0.25 radians over 5 seconds
-  r_dot = V / R;
-  ay = (V^2)/R;
-  delta = delta_wheel/VehicleParameters.steer_ratio;
-  beta = atan((VehicleParameters.b*tan(delta))/(VehicleParameters.a + VehicleParameters.b));
+  delta_steering_wheel = 0.05*time; // in radians
+  // equilibrium equations
+  // VehicleParameters.vehicleMass*ax = X; // commented out for now since we are fixing ax
+  VehicleParameters.vehicleMass*ay = Y;
+  VehicleParameters.Izz*yaw_rate = N;
+  yaw_rate = der(r);
   
-  vx = V*cos(beta);
-  vy = V*sin(beta);
+  Xa = 0.5*VehicleParameters.rho_air*(u^2)*VehicleParameters.Cd*VehicleParameters.A;
   
-  // info transfer from Vehicle.mo to Wheel.mo
-  wheel_fl.v_body.vx = vx;
-  wheel_fl.v_body.vy = vy;
-  wheel_fr.v_body.vx = vx;
-  wheel_fr.v_body.vy = vy;
-  wheel_rl.v_body.vx = vx;
-  wheel_rl.v_body.vy = vy;
-  wheel_rr.v_body.vx = vx;
-  wheel_rr.v_body.vy = vy;
+  // ax = der(u) - v*r;
+  ay = der(v) + u*r;
   
-  wheel_fl.accel_input.ax = ax;
-  wheel_fl.accel_input.ay = ay;
-  wheel_fr.accel_input.ax = ax;
-  wheel_fr.accel_input.ay = ay;
-  wheel_rl.accel_input.ax = ax;
-  wheel_rl.accel_input.ay = ay;
-  wheel_rr.accel_input.ax = ax;
-  wheel_rr.accel_input.ay = ay;
+  Ny = Y1*VehicleParameters.a - Y2*VehicleParameters.b;
+  Nx = delta_X1*VehicleParameters.trackwidth + delta_X2*VehicleParameters.trackwidth;
   
-  wheel_fl.yaw_rate = r_dot;
-  wheel_fr.yaw_rate = r_dot;
-  wheel_rl.yaw_rate = r_dot;
-  wheel_rr.yaw_rate = r_dot;
+  X1 = -wheel_fl.Fy*sin(wheel_fl.delta) - wheel_fr.Fy*sin(wheel_fr.delta);
+  X2 = wheel_rl.Fx + wheel_fr.Fx;
+  Y1 = wheel_fl.Fy*cos(wheel_fl.delta) + wheel_fr.Fy*cos(wheel_fr.delta);
+  Y2 = wheel_rl.Fy + wheel_rr.Fy;
   
-  wheel_fl.delta = delta;
-  wheel_fr.delta = delta;
-  wheel_rl.delta = delta;
-  wheel_rr.delta = delta;
+  delta_X1 = 0.5*(wheel_fl.Fy*sin(wheel_fl.delta) - wheel_fr.Fy*sin(wheel_fr.delta));
+  delta_X2 = 0.5*(wheel_rr.Fx - wheel_rl.Fx);
+  
+  X = X1 + X2 - Xa;
+  Y = Y1 + Y2;
+  
+  N = Ny + Nx;
+  
+  // inputs to Wheel.mo
+  wheel_fl.vx_body = u;
+  wheel_fl.vy_body = v;
+  wheel_fl.yaw_rate = yaw_rate;
+  wheel_fl.ax = ax;
+  wheel_fl.ay = ay;
+  
+  wheel_fr.vx_body = u;
+  wheel_fr.vy_body = v;
+  wheel_fr.yaw_rate = yaw_rate;
+  wheel_fr.ax = ax;
+  wheel_fr.ay = ay;
+  
+  wheel_rl.vx_body = u;
+  wheel_rl.vy_body = v;
+  wheel_rl.yaw_rate = yaw_rate;
+  wheel_rl.ax = ax;
+  wheel_rl.ay = ay;
+  
+  wheel_rr.vx_body = u;
+  wheel_rr.vy_body = v;
+  wheel_rr.yaw_rate = yaw_rate;
+  wheel_rr.ax = ax;
+  wheel_rr.ay = ay;
+  
+  wheel_fl.delta_steering_wheel = delta_steering_wheel;
+  wheel_fr.delta_steering_wheel = delta_steering_wheel;
+  wheel_rl.delta_steering_wheel = 0;
+  wheel_rr.delta_steering_wheel = 0;
+  
 
 
 end Vehicle;

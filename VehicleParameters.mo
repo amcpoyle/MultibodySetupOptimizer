@@ -26,4 +26,8 @@ package VehicleParameters
   
   constant Real Izz = 130; // TODO: total guess
   
+  constant Length rolling_radius = 0.2; // TODO: guesstimate that's def not right
+  constant Length wheel_radius = 0.22; // TODO also
+  
+  
 end VehicleParameters;
